@@ -14,15 +14,35 @@ int main(){
     }
 
     string number;
-    int itt = 0;
+    int firstCalCount = 0;  //stores the highest calorie count
+    int secondCalCount = 0; //stores the second highest
+    int thirdCalCount = 0;  //stores the thrid highest
+    int currentCalCount = 0;
 
     while(getline(inputFile, number)){
-        cout << number << endl;
 
-        if(number == ""){
-            cout << "empty line\n";
-        }
+       if(number == ""){
+            if(currentCalCount > firstCalCount){
+                secondCalCount = firstCalCount;
+                firstCalCount = currentCalCount;
+            }
+            else if(currentCalCount > secondCalCount){
+                thirdCalCount = secondCalCount;
+                secondCalCount = currentCalCount;
+            }
+            else if(currentCalCount > thirdCalCount){
+                thirdCalCount = currentCalCount;
+            }
+            currentCalCount = 0;
+            //number = "0";     //can be used instead of the if statement below :)
+       }
+       if(number != ""){
+            currentCalCount += stoi(number);
+       }
     }
+
+    cout << "The highest calorie count is " << firstCalCount << ".\n";
+    cout << "The top 3 highest calorie counts combined are " << firstCalCount + secondCalCount + thirdCalCount << ".\n";
 
     return 0;
 }
