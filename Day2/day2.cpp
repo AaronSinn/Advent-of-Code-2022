@@ -17,7 +17,8 @@ int main(){
     string input;
     char leftCol;
     char rightCol;
-    int totalScore = 0;
+    int partOneTotalScore = 0;
+    int partTwoTotalScore = 0;
 
     while(getline(inputFile, input)){
         istringstream iss(input);
@@ -29,48 +30,91 @@ int main(){
             //rock
             case 'A':
                 if(rightCol == 'X'){        //draw with rock
-                    totalScore += 4;
+                    partOneTotalScore += 4;
                 }
                 else if(rightCol == 'Y'){   //win with paper
-                    totalScore += 8;
+                    partOneTotalScore += 8;
                 }   
                 else{                       //loss with scissors
-                    totalScore += 3;
+                    partOneTotalScore += 3;
                 }
                 break;
             
             //paper
             case 'B':                       //loss with rock
                 if(rightCol == 'X'){
-                    totalScore += 1;
+                    partOneTotalScore += 1;
                 }
                 else if(rightCol == 'Y'){   //draw with paper
-                    totalScore += 5;
+                    partOneTotalScore += 5;
                 }
                 else{                       //win with scissors
-                    totalScore += 9;         
+                    partOneTotalScore += 9;         
                 }
                 break;
             
             //scissors
             case 'C':
                 if(rightCol == 'X'){        //win with rock
-                    totalScore += 7;
+                    partOneTotalScore += 7;
                 }
                 else if(rightCol == 'Y'){   //loss with paper
-                    totalScore += 2;
+                    partOneTotalScore += 2;
                 }
                 else{                       //draw with scissors
-                    totalScore += 6;
+                    partOneTotalScore += 6;
                 }
                 break;
             
             default:
                 break;
         }
+
+        switch(rightCol){
+
+            case 'X':
+                if(leftCol == 'A'){         //loss with scissors
+                    partTwoTotalScore += 3;
+                }
+                else if(leftCol == 'B'){    //loss with rock
+                    partTwoTotalScore += 1;
+                }
+                else{                       //loss with paper
+                    partTwoTotalScore += 2;
+                }
+                break;
+
+            case 'Y':
+                if(leftCol == 'A'){         //draw with rock
+                    partTwoTotalScore += 4;
+                }
+                else if(leftCol == 'B'){    //draw with paper
+                    partTwoTotalScore += 5;
+                }
+                else{                       //draw with scissors
+                    partTwoTotalScore += 6;
+                }
+                break;
+
+            case 'Z':
+                if(leftCol == 'A'){         //win with paper
+                    partTwoTotalScore += 8;
+                }
+                else if(leftCol == 'B'){    //win with scissors
+                    partTwoTotalScore += 9;
+                }
+                else{                       //win with rock
+                    partTwoTotalScore += 7;
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 
-    cout << "Total score is: " << totalScore << ".\n";
+    cout << "Total score for part one is: " << partOneTotalScore << ".\n";
+    cout << "Total score for part two is: " << partTwoTotalScore << ".\n";
 
     return 0;
 }
