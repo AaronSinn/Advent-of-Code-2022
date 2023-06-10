@@ -64,12 +64,13 @@ int main(){
         //     stackList[stackFrom - 1].pop();
         // }
 
-        for(int i = 0; i < crateCount; i++){
+        for(int i = 0; i < crateCount; i++){    //for part 2
             cratesList.push_back(stackList[stackFrom - 1].top());
             stackList[stackFrom - 1].pop();
         }
 
-        for(int i = 0; i < crateCount; i++){
+        
+        for(int i = 0; i < crateCount; i++){    //also for part 2
             stackList[stackTo - 1].push(cratesList.back());
             cratesList.pop_back();
         }
