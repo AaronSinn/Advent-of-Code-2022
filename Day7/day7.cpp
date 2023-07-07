@@ -2,7 +2,8 @@
 #include <fstream>
 #include <string>
 #include <map>
-#include <dir.hpp>
+#include <sstream>
+#include "dir.hpp"
 
 using namespace std;
 
@@ -16,13 +17,7 @@ int main(){
     std::map<std::string, dir> map;
 
     while(getline(inputFile, input)){
-        if(input[0] == 'c' && input[1] == 'd'){     //if a cd command is used
-            for(int i = 3; i < input.length(); ++i){
-                currentDir += input[i];
-            }
-        } 
-
-        cout << currentDir << endl;
+        //do what u did with day two to parse
 
     }
 
