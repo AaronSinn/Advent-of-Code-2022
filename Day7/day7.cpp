@@ -3,87 +3,7 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
-void split(string input, string &Linput, string &Rinput);
-
-class Dir{
-    public:
-        string name;
-        int dirSize;
-        Dir* parent;
-        vector<Dir> childern;
-
-        Dir(string name, int dirSize, Dir* parent){
-            this->name = name;
-            this->dirSize = dirSize;
-            this->parent = parent;
-        }
-
-        int sumOfSizesLessThan100K(){
-            int totalSize = 0;
-            
-            //if dir size < 100K
-            if(this->dirSize <= 100'000 ){
-                totalSize += dirSize;
-            }
-
-            for(Dir& child: childern){
-                cout << child.name << endl;
-                totalSize += child.sumOfSizesLessThan100K();
-            }
-            return totalSize;
-        }
-};
-
-int main(){
-
-    string input;   //line from the file
-    string Linput;  //left side of the input. Will be either a command or file size
-    string Rinput;  //right side of file. Will be a name or args for a command
-    ifstream inputFile("input.txt");
-    Dir root = Dir("/", 0, nullptr);
-    Dir* currentDir;
-
-    while(getline(inputFile, input)){
-        split(input, Linput, Rinput);
-
-        if(Linput == "cd"){
-            if(Rinput == "/"){
-                currentDir = &root;
-            }
-            else if(Rinput == ".."){
-                currentDir = currentDir->parent;
-            }
-            else{
-                for(Dir &child : currentDir->childern){
-                    if(child.name == Rinput){
-                        currentDir = &child; 
-                        break;
-                    }
-                }
-            }
-        }
-
-        else if(Linput == "dir"){
-            currentDir->childern.push_back(Dir(Rinput, 0, currentDir));
-        }
-
-        //Linput is equal to a filesize and not the ls command which is the last available possibility
-        else if(Linput != "ls"){
-            int fileSize = stoi(Linput);
-            currentDir->dirSize += fileSize;
-        }
-
-        Linput.clear();
-        Rinput.clear();
-    }
-    cout << root.sumOfSizesLessThan100K() << endl;
-
-    return 0;
-}
-
-void split(string input, string &Linput, string &Rinput){
+void split(std::string  input, std::string  &Linput, std::string  &Rinput){
     //if the input is a dir or a file
     if(input[0] != '$'){
         int i;
@@ -116,4 +36,32 @@ void split(string input, string &Linput, string &Rinput){
             }
         }
     }
+}
+
+struct Node{
+    std::string name;
+    int size = 0;
+    Node* parent;     
+    bool isDir;
+    std::vector<Node> children;
+
+    
+};
+
+int main(){
+
+    std::string  input;   //line from the file
+    std::string  Linput;  //left side of Wthe input. Will be either a command or file size
+    std::string  Rinput;  //right side of file. Will be a name or args for a command
+    std::ifstream inputFile("input.txt");
+    int sizeOfAllFiles = 0;
+
+    while(std::getline(inputFile, input)){
+        
+
+        Linput.clear();
+        Rinput.clear();
+    }
+
+    return 0;
 }
