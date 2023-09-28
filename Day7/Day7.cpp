@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <cctype>
 
 struct File{
 
@@ -10,6 +11,7 @@ struct File{
 
     std::string name;
     long size;
+
 };
 
 struct Directory{
@@ -18,10 +20,21 @@ struct Directory{
     Directory(std::string name):name(name){};
     std::string name;
     long size;
-    Directory* parent;
+    Directory* parent = nullptr;
     std::vector<std::unique_ptr<File>> files;          //pointers to the file classes
     std::vector<std::shared_ptr<Directory>> childern;  //pointers to childern classes  
 };
+
+long filesGreaterThan100KSize(Directory* currentDir){
+    long directSize = 0;
+    long totalSize = 0;
+
+    if(currentDir->childern.size() != 0){
+        
+    }
+
+    return totalSize;
+}
 
 int main(int argc, char **argv){
     std::string input;
@@ -32,31 +45,41 @@ int main(int argc, char **argv){
             throw std::runtime_error("Could not open input.txt");
         }
 
-        Directory* currentDir;
+        Directory* currentDir = nullptr;
+        int linecount = 0;
 
         while(getline(inputFile, input)){
+            // linecount++;
+            // std::cout << "Linecout: " << linecount << std::endl;
             
             //Change directory
             if(input.substr(0,4) == "$ cd" && input != "$ cd .."){
                 std::string newDirName = input.substr(5,input.length());
-                currentDir = new Directory(newDirName); //currentDir points to the memory address of the new directory on the heap
+                Directory* newDir = new Directory(newDirName); //currentDir points to the memory address of the new directory on the heap
+                newDir->parent = currentDir;
+                currentDir = newDir;
             }
             //Change directory to the outer one (parent)
             else if(input == "$ cd .."){
                 currentDir = currentDir->parent;
             }
-
-            if(input.substr(0,4) == "$ ls"){
-                if(input.substr(0,3) == "dir"){
-                    std::string childDirName = input.substr(4, input.length());
-                    currentDir->childern.push_back(std::make_shared<Directory>(new Directory(childDirName)));
-                }
-                else{
-                    std::size_t spacePos = input.find(' ');
-                    long fileSize = std::stoi(input.substr(0, spacePos));
-                    std::string fileName = input.substr(spacePos+1, input.length());
-                    //currentDir->files.push_back(std::make_unique<File>(new File(fileName, fileSize)));
-                }
+            
+            else if(input.substr(0,3) == "dir"){
+                std::string childDirName = input.substr(4, input.length());
+                currentDir->childern.push_back(std::make_shared<Directory>(childDirName));
+            }
+            else if(input != "$ ls"){
+                std::size_t spacePos = input.find(' ');
+                long fileSize = std::stoi(input.substr(0, spacePos));
+                // std::cout << "FILESIZE: " << fileSize << std::endl;
+                std::string fileName = input.substr(spacePos+1, input.length());
+                currentDir->files.push_back(std::make_unique<File>(fileName, fileSize));
+                // std::cout << "Current Dir: " << currentDir->name << ", Files: ";
+                
+                // for(int i = 0; i < currentDir->files.size(); i++){
+                //     std::cout << currentDir->files.at(i)->name << " ";
+                // }
+                // std::cout << "\n";
             }
         }
 
