@@ -25,15 +25,26 @@ struct Directory{
     std::vector<std::shared_ptr<Directory>> childern;  //pointers to childern classes  
 };
 
-long filesGreaterThan100KSize(Directory* currentDir){
-    long directSize = 0;
-    long totalSize = 0;
+//returns total internal file size for the dir
+long addFiles(Directory* dir){
+    long fileSize = 0;
 
-    if(currentDir->childern.size() != 0){
-        
+    for(int i = 0; i < dir->files.size(); i++){
+        fileSize += dir->files.at(i)->size;
     }
 
-    return totalSize;
+}
+
+//Computes the total size of each Dir
+long totalDirSize(Directory* currentDir){
+
+    long totalFileSize = 0;
+
+    if(currentDir->childern.size() == 0){
+        return addFiles(currentDir);
+    }
+
+    
 }
 
 int main(int argc, char **argv){
