@@ -53,7 +53,7 @@ int main(int argc, char **argv){
     
     try{
         if(inputFile.is_open() == false){
-            throw std::runtime_error("Could not open input.txt");
+            throw std::runtime_error("Could not open input.txt :(");
         }
 
         Directory* currentDir = nullptr;
